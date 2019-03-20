@@ -13,6 +13,13 @@ export class HomeService {
       new Date('2019-03-17'),
       new Date('2019-03-20'),
       1
+    ),
+    new Item(
+      2,
+      'Light Bulb',
+      new Date(),
+      new Date('2019-03-25'),
+      2
     )
   ];
 
@@ -21,4 +28,13 @@ export class HomeService {
   }
 
   constructor() { }
+
+  getItem(id) {
+    return {...this._items.find(i => i.id === +id)};
+  }
+
+  addItem(item: Item) {
+    this._items.push(item);
+    console.log(this._items);
+  }
 }

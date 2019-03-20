@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonItemSliding } from '@ionic/angular';
 
 import { CreateComponent } from './create/create.component';
 import { HomeService } from './home.service';
@@ -17,7 +18,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private homeService: HomeService
+    private homeService: HomeService,
+    private router: Router
     ) {}
 
   ngOnInit() {
@@ -31,7 +33,17 @@ export class HomePage implements OnInit {
       })
       .then(modalEl => {
         modalEl.present();
+        return modalEl.onDidDismiss();
+      })
+      .then(resultData => {
+        if(resultData.role === 'saved') {
+          this.loadedItems = this.homeService.items;
+        }
       })
   }
 
+  onEdit(id: number, slidingItem: IonItemSliding) {
+    slidingItem.close();
+    this.router.navigate(['/', 'home', 'edit', id]);
+  }
 }

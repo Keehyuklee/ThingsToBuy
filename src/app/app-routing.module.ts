@@ -3,7 +3,19 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+  { 
+    path: 'home',
+    children: [
+      {
+        path: '',
+        loadChildren: './home/home.module#HomePageModule'
+      },
+      {
+        path: 'edit/:id',
+        loadChildren: './home/edit/edit.module#EditPageModule'
+      }
+    ],
+  }
 ];
 
 @NgModule({
