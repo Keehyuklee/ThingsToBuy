@@ -12,29 +12,62 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-list>
-          <ion-item>
-            <ion-label position="stacked">Item Name</ion-label>
-            <ion-input #name></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Quantity</ion-label>
-            <ion-input #qty type="number" min="0"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Due Date</ion-label>
-            <ion-input #date type="date" min="today"></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col text-right>
-        <ion-button (click)="onSave(name.value, qty.value, date.value)">Save</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <form #createForm="ngForm" (ngSubmit)="onSave(createForm)">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Item Name</ion-label>
+              <ion-input
+                type="text"
+                ngModel
+                name="itemName"
+                required
+                #itemNameCtrl="ngModel"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Quantity</ion-label>
+              <ion-input
+                type="number"
+                min="0"
+                ngModel
+                name="qty"
+                required
+                #qtyCtrl="ngModel"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Due Date</ion-label>
+              <ion-datetime
+                ngModel
+                name="dueDate"
+                #dueDateCtrl="ngModel"
+                [min]="todayString"
+              ></ion-datetime>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button
+            type="submit"
+            expand="block"
+            color="tertiary"
+            [disabled]="!createForm.valid"
+          >
+            SAVE
+          </ion-button>
+          <ion-button 
+            type="reset" 
+            expand="block"
+            color="danger">
+            RESET
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { ModalController, ToastController } from '@ionic/angular';
 
@@ -11,7 +12,9 @@ import { Item } from '../home.model';
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent implements OnInit {
-  today = new Date();
+  today = new Date()
+  todayString = this.today.getFullYear() + '-' + this.addZero((this.today.getMonth()+1)) + '-' + this.addZero(this.today.getDate());
+
 
   constructor(
     private modalCtrl: ModalController,
@@ -25,8 +28,14 @@ export class CreateComponent implements OnInit {
     this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  onSave(name, qty, date) {
-    this.homeService.addItem(new Item(this.homeService.items.length + 1, name, new Date(), date, qty));
+  onSave(form: NgForm) {
+    this.homeService
+      .addItem(new Item(
+        this.homeService.items.length + 1, 
+        form.value.itemName, 
+        new Date(), 
+        form.value.dueDate,
+        form.value.qty));
     this.toastCtrl.create({
       message: 'SAVED',
       duration: 2000,
@@ -40,6 +49,13 @@ export class CreateComponent implements OnInit {
 
   onReset() {
 
+  }
+
+  addZero(num) {
+    if (num < 10) {
+      num = '0' + num;
+    }
+    return num;
   }
 
 }

@@ -35,6 +35,5 @@ export class HomeService {
 
   addItem(item: Item) {
     this._items.push(item);
-    console.log(this._items);
   }
 }
