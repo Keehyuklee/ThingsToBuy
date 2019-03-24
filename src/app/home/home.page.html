@@ -22,10 +22,10 @@
             <ion-label>Due Date</ion-label>
           </ion-list-header>
           <ion-item-sliding *ngFor="let item of loadedItems" #editSliding>
-            <ion-item detail>
+            <ion-item detail [routerLink]="['/', 'home', 'detail', item.id]" [ngStyle]="isPassed(item.dueDate) ? {'color': 'red'} : null">
               <ion-label>{{ item.title }}</ion-label>
               <ion-label text-center>{{ item.quantity }}</ion-label>
-              <ion-label>{{ item.dueDate | date }}</ion-label>
+              <ion-label text-right>{{ item.dueDate | date: 'MMM dd' }}</ion-label>
             </ion-item>
             <ion-item-options>
               <ion-item-option (click)="onEdit(item.id, editSliding)">

@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content padding>
-  <form #createForm="ngForm" (ngSubmit)="onSave(createForm)">
+  <form #createForm="ngForm" (ngSubmit)="onSave()">
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -27,6 +27,9 @@
                 #itemNameCtrl="ngModel"
               ></ion-input>
             </ion-item>
+            <ion-item *ngIf="!itemNameCtrl.valid && itemNameCtrl.touched" lines="none">
+              You have to enter an item name!
+            </ion-item>
             <ion-item>
               <ion-label position="floating">Quantity</ion-label>
               <ion-input
@@ -38,13 +41,16 @@
                 #qtyCtrl="ngModel"
               ></ion-input>
             </ion-item>
+            <ion-item *ngIf="!qtyCtrl.valid && qtyCtrl.touched" lines="none">
+              You have to enter a quantity!
+            </ion-item>
             <ion-item>
               <ion-label position="floating">Due Date</ion-label>
               <ion-datetime
                 ngModel
                 name="dueDate"
                 #dueDateCtrl="ngModel"
-                [min]="todayString"
+                [min]="today.toISOString()"
               ></ion-datetime>
             </ion-item>
           </ion-list>
@@ -60,10 +66,7 @@
           >
             SAVE
           </ion-button>
-          <ion-button 
-            type="reset" 
-            expand="block"
-            color="danger">
+          <ion-button type="reset" expand="block" color="danger">
             RESET
           </ion-button>
         </ion-col>

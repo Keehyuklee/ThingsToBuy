@@ -23,9 +23,23 @@ export class HomePage implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.loadedItems = this.homeService.items;
+    this.loadedItems = this.homeService.items.sort((a, b) => {
+      var dateA=a.dueDate, dateB = b.dueDate;
+      if(dateA < dateB) return -1;
+      if(dateA > dateB) return 1;
+      return 0;
+    });
   }
 
+  ionViewDidEnter() {
+    this.loadedItems = this.homeService.items.sort((a, b) => {
+      var dateA=a.dueDate, dateB = b.dueDate;
+      if(dateA < dateB) return -1;
+      if(dateA > dateB) return 1;
+      return 0;
+    });
+  }
+  
   onAddNewItem() {
     this.modalCtrl
       .create({
@@ -37,7 +51,7 @@ export class HomePage implements OnInit {
       })
       .then(resultData => {
         if(resultData.role === 'saved') {
-          this.loadedItems = this.homeService.items;
+          this.ngOnInit();
         }
       })
   }
@@ -45,5 +59,13 @@ export class HomePage implements OnInit {
   onEdit(id: number, slidingItem: IonItemSliding) {
     slidingItem.close();
     this.router.navigate(['/', 'home', 'edit', id]);
+  }
+
+  isPassed(dueDate: string) {
+    const today = new Date().toISOString();
+    if(today > dueDate){
+      return true;
+    }
+    return false;
   }
 }

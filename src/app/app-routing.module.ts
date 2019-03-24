@@ -13,8 +13,16 @@ const routes: Routes = [
       {
         path: 'edit/:id',
         loadChildren: './home/edit/edit.module#EditPageModule'
+      },
+      {
+        path: 'detail/:id',
+        loadChildren: './home/detail/detail.module#DetailPageModule'
       }
     ],
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
   }
 ];
 

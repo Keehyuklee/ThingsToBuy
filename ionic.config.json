@@ -1,5 +1,7 @@
 {
   "name": "ThingsToBuy",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

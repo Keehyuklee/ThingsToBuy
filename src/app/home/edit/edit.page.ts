@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 
 import { HomeService } from '../home.service';
 import { Item } from '../home.model';
@@ -13,11 +14,15 @@ import { Item } from '../home.model';
 })
 export class EditPage implements OnInit {
   item: Item;
+  today = new Date();
+  editForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private navCtrl: NavController,
-    private homeService: HomeService
+    private homeService: HomeService,
+    private toastCtrl: ToastController
   ) { }
 
   ngOnInit() { 
@@ -27,6 +32,32 @@ export class EditPage implements OnInit {
         return;
       }
       this.item = this.homeService.getItem(paramMap.get('id'));
+    });
+    this.editForm = new FormGroup({
+      itemName: new FormControl(this.item.title, Validators.required),
+      qty: new FormControl(this.item.quantity, Validators.required),
+      dueDate: new FormControl(this.item.dueDate ? this.item.dueDate : null)
+    });
+  }
+
+  onUpdate() {
+    var editedItem = new Item(
+      this.item.id,
+      this.editForm.value.itemName,
+      this.item.addedDate,
+      this.editForm.value.dueDate ? this.editForm.value.dueDate : null,
+      this.editForm.value.qty
+    )
+    this.homeService.updateItem(this.item.id, editedItem);
+    // this.router.navigate(['../']);
+    this.navCtrl.pop();
+    this.toastCtrl.create({
+      message: 'UPDATED',
+      duration: 2000,
+      cssClass: 'toast-message'
+    })
+    .then(toastEl => {
+      toastEl.present();
     });
   }
 }

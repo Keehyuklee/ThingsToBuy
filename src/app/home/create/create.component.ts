@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { ModalController, ToastController } from '@ionic/angular';
@@ -12,9 +12,8 @@ import { Item } from '../home.model';
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent implements OnInit {
-  today = new Date()
-  todayString = this.today.getFullYear() + '-' + this.addZero((this.today.getMonth()+1)) + '-' + this.addZero(this.today.getDate());
-
+  @ViewChild('createForm') creatForm: NgForm;
+  today = new Date();
 
   constructor(
     private modalCtrl: ModalController,
@@ -28,14 +27,14 @@ export class CreateComponent implements OnInit {
     this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  onSave(form: NgForm) {
+  onSave() {
     this.homeService
       .addItem(new Item(
         this.homeService.items.length + 1, 
-        form.value.itemName, 
-        new Date(), 
-        form.value.dueDate,
-        form.value.qty));
+        this.creatForm.value['itemName'], 
+        new Date().toISOString(), 
+        this.creatForm.value['dueDate'] ? this.creatForm.value['dueDate'] : null,
+        this.creatForm.value.qty));
     this.toastCtrl.create({
       message: 'SAVED',
       duration: 2000,
@@ -45,10 +44,6 @@ export class CreateComponent implements OnInit {
       toastEl.present();
     });
     this.modalCtrl.dismiss(null, 'saved');
-  }
-
-  onReset() {
-
   }
 
   addZero(num) {
