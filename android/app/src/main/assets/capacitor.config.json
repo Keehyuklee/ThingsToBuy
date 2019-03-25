@@ -1,0 +1,6 @@
+{
+  "appId": "Things.To.Buy",
+  "appName": "ThingsToBuy",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}
