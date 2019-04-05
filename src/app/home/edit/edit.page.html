@@ -51,7 +51,7 @@
             type="submit"
             expand="block"
             color="tertiary"
-            [disabled]="!editForm.valid"
+            [disabled]="!editForm.valid || !editForm.touched || !editForm.dirty"
           >
             UDATE
           </ion-button>

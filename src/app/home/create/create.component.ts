@@ -28,13 +28,17 @@ export class CreateComponent implements OnInit {
   }
 
   onSave() {
+    let itemCount;
+    this.homeService.items.subscribe(items => itemCount = items.length);
     this.homeService
       .addItem(new Item(
-        this.homeService.items.length + 1, 
+        itemCount + 1, 
         this.creatForm.value['itemName'], 
         new Date().toISOString(), 
         this.creatForm.value['dueDate'] ? this.creatForm.value['dueDate'] : null,
-        this.creatForm.value.qty));
+        this.creatForm.value.qty))
+      .subscribe();
+
     this.toastCtrl.create({
       message: 'SAVED',
       duration: 2000,
